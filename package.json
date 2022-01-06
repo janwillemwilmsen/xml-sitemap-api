@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.17.2",
     "extract-domain": "^2.4.0",
     "sitemapper": "^3.2.2"
