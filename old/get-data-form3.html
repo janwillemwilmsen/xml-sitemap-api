@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<!-- Start Live Server in VS code -->
+
+<h1>Get XML urls</h1>    
+<!-- <form  action="http://localhost:3000/sitemap" method="GET"> -->
+    <form>
+    <!-- <input type="text" id="API_URL" name="API_URL" value="http://localhost:3000/sitemap?xmlsitemap=https://toertocht.be/sitemap.xml"> -->
+    <!-- <input type="text" id="xmlsitemap" name="xmlsitemap" value="https://toertocht.be/sitemap.xml"> -->
+    <!-- <input type="submit" value="submit to xmlSitemap api"> -->
+    <button id="button">Submit</button>
+</form>
+
+<ul>
+
+</ul>
+
+<script>
+
+
+const url = 'http://localhost:3000/sitemap?xmlsitemap=';
+
+let data = {
+    xmlsitemap: 'https://toertocht.be/sitemap.xml'
+}
+
+let request = new Request(url, {
+  method: 'POST',
+//   body: JSON.stringify(data),
+  body: data,
+  headers: new Headers({
+    'Content-Type': 'application/json; charset=UTF-8'
+  })
+});
+
+console.log(request)
+
+fetch(request)
+.then(resonse => response.json())
+        .then(data => console.log(resonse))
+        .catch(err => console.log('errorsss'))
+
+    
+    // var button = document.getElementById('button')
+    // console.log(button.id)
+    // var inputValue = document.getElementById('xmlsitemap')
+    // console.log(inputValue.value)
+    
+    // button.addEventListener('click', function(){
+    //     // preventDefault();
+    //     fetch(`http://localhost:3000/sitemap?xmlsitemap=${encodeURIComponent(inputValue.value)}`)
+    //     .then(resonse => response.json())
+    //     .then(data => console.log(data))
+    //     .catch(err => console.log('errorsss'))
+    // })
+
+// var button = document.getElementById('button')
+// console.log(button)
+// const url = 'http://localhost:3000/sitemap/?'
+// console.log(url)
+
+// const data = { xmlsitemap: "https://toertocht.be/sitemap.xml" };
+// console.log(data)
+
+// button.addEventListener('click', function(){
+// fetch(
+//     url,
+//     {
+//         headers: { "Content-Type": "application/json" },
+//         body: JSON.stringify(data),
+//         method: "POST"
+//     }
+// )
+// .then(data => data.json())
+// .then((json) => {  console.log(json)  });
+// })
+   
+</script>
+</body>
+</html>

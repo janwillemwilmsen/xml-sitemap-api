@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>from server</title>
+</head>
+<body>
+<h1>Server side xml-sitemap </h1>
+<a href="http://localhost:3000/?xmlsitemap=https://www.essent.nl/content/sitemap.xml">Sitemap van Essent</a><br>
+<a href="http://localhost:3000/?xmlsitemap=https://www.vattenfall.nl/sitemap.xml">Sitemap van Vattenfall</a><br> 
+<a href="http://localhost:3000/?xmlsitemap=https://www.toertocht.be/sitemap.xml">Sitemap van Toertocht.be</a><br> 
+    
+
+<br><br>
+<form action="http://localhost:3000/"  method="get">
+    <input type="text" id="xmlsitemap" name="xmlsitemap" value="https://www.toertocht.be/sitemap.xml">
+    <input type="submit" value="submit xmlSitemap">
+</form>
+
+
+
+
+
+</body>
+</html>

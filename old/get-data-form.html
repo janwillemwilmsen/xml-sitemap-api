@@ -12,7 +12,7 @@
 <!-- <form  action="http://localhost:3000/sitemap?" method="POST"> -->
     <form>
     <!-- <input type="text" id="API_URL" name="API_URL" value="http://localhost:3000/sitemap?xmlsitemap=https://toertocht.be/sitemap.xml"> -->
-    <input type="text" id="xmlsitemap" name="xmlsitemap" value="https://toertocht.be/sitemap.xml">
+    <!-- <input type="text" id="xmlsitemap" name="xmlsitemap" value="https://toertocht.be/sitemap.xml"> -->
     <!-- <input type="submit" value="submit to xmlSitemap api"> -->
     <button>Submit</button>
 </form>
@@ -103,35 +103,47 @@
 
 // });
 
-var serializeForm = function (form) {
-	var obj = {};
-	var formData = new FormData(form);
-	for (var key of formData.keys()) {
-		obj[key] = formData.get(key);
-	}
-	return obj;
-};
+// var inputValue = document.getElementById('xmlsitemap')
+const basehost = 'http://localhost:3000/sitemap?xmlsitemap='
+const inputValue = 'https://toertocht.be/sitemap.xml'
+console.log(inputValue)
 
 document.addEventListener('submit', function (event) {
+event.preventDefault();
 
-	event.preventDefault();
+fetch('http://localhost:3000/sitemap?xmlsitemap=https://toertocht.be/sitemap.xml', {
+// fetch("http://localhost:3000/sitemap?xmlsitemap=", {
+    method: 'POST',
+    data: inputValue
+    // headers: {
+    //     'Content-type': 'application/json; charset=UTF-8'
+    // }
+}).then(function (response) {
+    if (response.ok) {
+        const users = response.json();
+        return users;
+        console.log('resonse OK')
+        console.log(response.url)
+    }
+    return Promise.reject(response);
+}).then(function () {
+    console.log(data, 'data van json');
+    JSON.stringify(data);
 
-	fetch('http://localhost:3000/sitemap', {
-		method: 'POST',
-		body: JSON.stringify(serializeForm(event.target)),
-		headers: {
-			'Content-type': 'application/json; charset=UTF-8'
-		}
-	}).then(function (response) {
-		if (response.ok) {
-			return response.json();
-		}
-		return Promise.reject(response);
-	}).then(function (data) {
-		console.log(data);
-	}).catch(function (error) {
-		console.warn(error);
-	});
+ 
+
+})
+
+
+
+// .then(response => response.json())
+.then(data => console.log(data, "data console log"))
+// .then(data => console.log(data.sites))
+.then(data => console.log(data))
+
+.catch(function (error) {
+    console.warn(error, 'Catch error');
+});
 });
 </script>
 </body>
