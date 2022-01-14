@@ -9,13 +9,15 @@ Start express with " node . " in VS Code, or " node index " in terminal.
 Go to: localhost:3000/?https://mywebsite.ext/sitemap.xml and press enter.   
 
 **Server:**  
-Open: /public/search.html with Live Server. Get a search field where you enter an xml sitemap url.
+Open: /search.html Get a search field where you enter an xml sitemap url.
 Response should be json array with urls.
 
 **Frontend:**  
-Open: localhost:3000/fetch-search.html to trigger a fetch function and list all urls.  
+Open: /frontend/fetch-search.html with Live Server to trigger a fetch function and list all urls.  
   
-Also saves a json file with all urls from the fetched/scraped xml sitemap.  
+<!--- Also saves a json file with all urls from the fetched/scraped xml sitemap.  -->
+
+Open: /frontend/fetch-filter.html with Live Server to trigger a fetch function, list all urls, and filter urls.
   
 Uses NPM module [sitemapper](https://github.com/seantomburke/sitemapper), with support for Sitemapindex.
 

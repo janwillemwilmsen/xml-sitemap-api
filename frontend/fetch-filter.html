@@ -1,0 +1,147 @@
+<!-- start local Live Server -->
+<!-- https://stackoverflow.com/questions/58570121/how-to-filter-form-input-data-with-json-data-in-plain-javascript -->
+<!-- https://www.youtube.com/watch?v=1iysNUrI3lw -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Fetch XML Sitemap from frontend</h1>
+    <form action=""  method="get" id="getXML">
+        <!-- <input type="text" id="API_URL" name="API_URL" value="http://localhost:3000/sitemap?xmlsitemap=https://toertocht.be/sitemap.xml"> -->
+        <input type="text" id="API_URL" name="xmlsitemap" value="" placeholder="xmlsitemapurl">
+        <!-- <input type="submit" value="submit to xmlSitemap api"> -->
+        <button id="button">submit to xmlSitemap api</button>
+    </form>
+
+    <br><br>
+<h2>Filter urls</h2>
+<!-- <form method="POST"> -->
+  <input type="text" id="searchName" class="form-control" placeholder="filter url">
+ <!-- <button  onclick="filterUsers(event)" id="filterBttn" class="search-icon">FilterUrl</button> -->
+ <!-- <button  id="filterBttn">FilterUrl</button> -->
+   <!-- </form> -->
+<br><br>
+
+    <!----LI from Json Response----->
+    <ul id="match-list">    
+    </ul>
+
+
+<script>
+var url = new URL("http://localhost:4000/new?xmlsitemap=");
+let params = (new URL(document.location)).searchParams;
+
+// var url = "http://localhost:4000/?xmlsitemap=";
+// let params = (new URL (document.location)).searchParams;
+
+let doel = params.get('xmlsitemap');
+const form = document.getElementById('getXML');
+const data = new FormData(form);
+const myList = document.querySelector('ul');
+const button = document.getElementById('button')
+
+// const newApiUrl = 'http://localhost:4000/?xmlsitemap=https://toertocht.be/sitemap.xml'
+const newApiUrl = url + doel
+
+// console.log(newApiUrl)
+// console.log(button)
+// console.log(url)
+// console.log(doel)
+
+button.addEventListener('click', fetchUrls());
+
+async function fetchUrls() {
+ try{
+   const response = await fetch(newApiUrl)
+   const users = await response.json();
+  //  console.log('USERS',users)
+   return users;
+  }catch(err){
+    console.error(err); 
+  }
+}
+fetchUrls().then(users => {
+  users; // fetched users
+console.log('USERS', users)
+  const smdata = JSON.stringify(users);
+  console.log(smdata)
+  // console.log('fetchUrlsFunctie', users)
+  // console.log(users.url)
+  // Changed Output of the Api --> only urls now. not whole XMLSitemapper object 
+  // console.log('user.Sites', users)
+  
+  // for(var i = 0; i < smdata.length; i++) {
+  //   // var listItem = document.createElement('li');
+  //   // listItem.innerHTML = '<strong>' + smdata[i].sitemapurl + '</strong>';
+  //   // myList.appendChild(listItem);
+    // console.log('smdata.sitemap',smdata.sitemapurl)
+  //   }
+
+  users.forEach(function(obj) {
+    console.log(obj.sitemapurl)
+    var listItem = document.createElement('li');
+    listItem.innerHTML = '<strong>' + obj.sitemapurl + '</strong>';
+    myList.appendChild(listItem);
+  })
+
+});
+
+const search = document.getElementById('searchName')
+const matchList = document.getElementById('match-list');
+
+
+// Search json fetch respons filter
+
+const searchStates = async searchText => {
+  const res = await fetch(newApiUrl);
+  const states = await res.json();
+  // console.log(states);
+  // console.log(states);
+
+
+  // Get matches to current textinput
+  let matches = states.filter(state => {
+    const regex = new RegExp(`${searchText}`, 'gi');
+    return state.sitemapurl.match(regex)
+  });
+
+
+console.log(matches);
+
+if (searchText.length === 0) {
+  matches = [];
+}
+
+outputHtml(matches)
+
+};
+
+// Show results in html
+const outputHtml = matches => {
+  if(matches.length > 0) {
+    const html = matches.map(match => `
+    <li> ${match.sitemapurl}</li>
+
+    `).join('');
+
+    matchList.innerHTML = html;
+
+    console.log(html)
+  }
+}
+
+search.addEventListener('input', () => searchStates(search.value));
+
+
+
+</script>
+
+
+
+</body>
+</html>
