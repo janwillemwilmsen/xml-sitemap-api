@@ -1,0 +1,113 @@
+<!-- https://stackoverflow.com/questions/58570121/how-to-filter-form-input-data-with-json-data-in-plain-javascript -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+  <!-- start local Live Server -->
+    <h1>Fetch XML Sitemap from frontend</h1>
+    <form action=""  method="get" id="getXML">
+        <!-- <input type="text" id="API_URL" name="API_URL" value="http://localhost:3000/sitemap?xmlsitemap=https://toertocht.be/sitemap.xml"> -->
+        <input type="text" id="API_URL" name="xmlsitemap" value="">
+        <!-- <input type="submit" value="submit to xmlSitemap api"> -->
+        <button id="button">submit to xmlSitemap api</button>
+    </form>
+
+    <br><br>
+<h2>Filter urls</h2>
+<form method="POST">
+  <input type="text" id="searchName" class="form-control" placeholder="Lorem name">
+ <button  onclick="filterUsers(event)" id="filterBttn" class="search-icon">FilterUrl</button>
+ <!-- <button  id="filterBttn">FilterUrl</button> -->
+   </form>
+<br><br>
+<h2>Filter urls 2</h2>
+<section class="items">
+  <div class="container">
+    <div class="mb-3">
+      <input type="text" id="search2" class="search">
+      <select class="select form-select mt-3"></select>
+    </div>
+    <div class="items-container row row-cols-1 row-cols-md-3 g-4"></div>
+  </div>
+</section>
+
+
+    <!----LI from Json Response----->
+    <ul>    
+    </ul>
+
+
+<script>
+var url = new URL("http://localhost:4000/?xmlsitemap=");
+let params = (new URL(document.location)).searchParams;
+let doel = params.get('xmlsitemap');
+const form = document.getElementById('getXML');
+const data = new FormData(form);
+const myList = document.querySelector('ul');
+const button = document.getElementById('button')
+const newApiUrl = url + doel
+console.log(newApiUrl)
+console.log(button)
+console.log(url)
+console.log(doel)
+let urlx = {}
+// let root = document.getElementById('')
+
+button.addEventListener('click', fetchUrls());
+
+
+
+
+async function fetchUrls() {
+ try{
+   const response = await fetch(newApiUrl)
+   const users = await response.json();
+   return users;
+   console.log('users', users)
+  }catch(err){
+    console.error(err); 
+  }
+}
+fetchUrls().then(users => {
+ const urlx = users.sites; // fetched users
+ console.log('urlx', urlx)
+  // console.log(users.url)
+  // console.log('user.Sites', users.sites)
+  // populatePosts()
+
+  const searchfilled = document.getElementById('search2')
+  console.log(searchfilled)
+  if ( searchfilled === null ) {
+    
+    for(var i = 0; i < urlx.length; i++) {
+      var listItem = document.createElement('li');
+      listItem.innerHTML = '<strong>' + urlx[i] + '</strong>';
+      myList.appendChild(listItem);
+    }
+  }
+
+  else {
+    for(var i = 0; i < urlx.length; i++) {
+      var listItem = document.createElement('li');
+      listItem.innerHTML = 'else <strong>' + urlx[i] + '</strong>';
+      myList.appendChild(listItem);
+      
+    }
+    
+  }
+
+
+  
+})
+
+</script>
+
+
+
+</body>
+</html>

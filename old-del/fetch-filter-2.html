@@ -1,0 +1,187 @@
+<!-- start local Live Server -->
+
+<!-- 
+https://codingafterthirty.com/how-to-fetch-filter-and-render-data-in-javascript-javascript-tutorial-for-beginners/
+https://codepen.io/codingafterthirty/pen/YzxKVEm?editors=1010
+ -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Fetch XML Sitemap from frontend</h1>
+    <form action=""  method="get" id="getXML">
+        <!-- <input type="text" id="API_URL" name="API_URL" value="http://localhost:3000/sitemap?xmlsitemap=https://toertocht.be/sitemap.xml"> -->
+        <input type="text" id="API_URL" name="xmlsitemap" value="">
+        <!-- <input type="submit" value="submit to xmlSitemap api"> -->
+        <button id="button">submit to xmlSitemap api</button>
+    </form>
+
+    <br><br>
+<h2>Filter urls</h2>
+<form method="POST">
+  <input type="text" id="searchName" class="form-control" placeholder="Lorem name">
+ <button  onclick="filterUsers(event)" id="filterBttn" class="search-icon">FilterUrl</button>
+ <!-- <button  id="filterBttn">FilterUrl</button> -->
+   </form>
+<br><br>
+<h2>Filter urls 2</h2>
+<section class="items">
+  <div class="container">
+    <div class="mb-3">
+      <input type="text" class="search form-control mt-3">
+      <select class="select form-select mt-3"></select>
+    </div>
+    <div class="items-container row row-cols-1 row-cols-md-3 g-4"></div>
+  </div>
+</section>
+
+
+    <!----LI from Json Response----->
+    <ul>    
+    </ul>
+
+
+<script>
+var url1 = new URL("http://localhost:4000/?xmlsitemap=");
+let params = (new URL(document.location)).searchParams;
+let doel = params.get('xmlsitemap');
+const form = document.getElementById('getXML');
+const data = new FormData(form);
+const myList = document.querySelector('ul');
+const button = document.getElementById('button')
+const newApiUrl = url1 + doel
+console.log(newApiUrl)
+console.log(button)
+console.log(url1)
+console.log(doel)
+
+button.addEventListener('click', fetchUrls());
+
+async function fetchUrls() {
+ try{
+   const response = await fetch(newApiUrl)
+   const users = await response.json();
+   return users;
+  }catch(err){
+    console.error(err); 
+  }
+}
+fetchUrls().then(users => {
+  users; // fetched users
+  console.log('fetchUrlsFunctie', users)
+  // console.log(users.url)
+  console.log('user.Sites', users.sites)
+  
+  for(var i = 0; i < users.sites.length; i++) {
+    var listItem = document.createElement('li');
+    listItem.innerHTML = '<strong>' + users.sites[i] + '</strong>';
+    myList.appendChild(listItem);
+    }
+
+});
+
+
+const url = "https://communityoneapi.herokuapp.com/projects";
+
+const itemsContainer = document.querySelector(".items-container");
+const searchField = document.querySelector(".search");
+const select = document.querySelector(".select");
+
+function useState() {
+  let _state = null;
+
+  function getState() {
+    return _state;
+  }
+
+  function setState(data) {
+    _state = [...data];
+  }
+
+  return [getState, setState];
+}
+
+const [getState, setState] = useState();
+
+function cardTemplate(data) {
+  const { id, name, description, featuredImage, developer } = data;
+  return `
+    <article class="col items-container">
+      <div class="col ">
+        <div class="card h-100 data-item-id=${id}">
+          <div class="card-header d-flex justify-content-between">
+            <span>${developer.firstName}</span> <span>${developer.userType}</span>
+          </div>
+          <!----img src="${featuredImage.formats.large.url}" class="card-img-top" alt="..."---->
+          <div class="card-body">
+            <h5 class="card-title">${name}</h5>
+            <p class="card-text">${description}</p>
+          </div>
+        </div>
+      </div>
+    </article>
+  `;
+}
+
+function getDeveloperNames(data) {
+  const names = data.map((item) => item.developer.firstName);
+  const uniqueNames = [...new Set(names)];
+  return uniqueNames;
+}
+
+async function getData(url) {
+  const response = await fetch(url);
+  const data = await response.json();
+  return data;
+}
+
+function handleSearchInputChange(e) {
+  const value = e.target.value.toLowerCase();
+  const data = getState();
+  const filteredItems = data.filter((item) =>
+    item.name.toLowerCase().includes(value)
+  );
+  renderProjectsToDom(filteredItems);
+}
+
+function renderProjectsToDom(data) {
+  let items = data.map((item) => cardTemplate(item)).join("");
+  itemsContainer.innerHTML = items;
+}
+
+function renderSelectItemsToDom(data) {
+  let items = ['<option selected value="all">All</option>'];
+  data.forEach((item) => {
+    items.push(`<option value="${item}">${item}</option>`);
+  });
+  select.innerHTML = items.join("");
+}
+
+async function handleInitialLoad() {
+  const data = await getData(url);
+  setState(data);
+
+  const devNames = getDeveloperNames(getState());
+    renderSelectItemsToDom(devNames);
+
+  renderProjectsToDom(getState());
+}
+
+window.addEventListener("DOMContentLoaded", handleInitialLoad);
+searchField.addEventListener("keyup", handleSearchInputChange);
+// select.addEventListener("change", handleSelectInputChange);
+
+
+
+</script>
+
+
+
+</body>
+</html>
