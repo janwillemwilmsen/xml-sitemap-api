@@ -116,3 +116,6 @@ app.listen(port, () => {
     console.log(`Sitemap XML app listening at http://localhost:${port}`)
     console.log('server')  
   })
+  
+
+  exports.hey = app
