@@ -10,7 +10,7 @@ const sitemap = new Sitemapper();
 
 // http://localhost:3000/?xmlsitemap=https://www.toertocht.be/sitemap.xml
 
-app.use(express.static('public'))
+app.use(express.static('frontend'))
 app.use(function (req, res, next) {
 
     // Website you wish to allow to connect
