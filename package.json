@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npx cloud-functions --target=hey",
+    "start": "npx functions-framework --target=hey",
     "starter": "nodemon index.js"
   },
   "author": "",
@@ -15,5 +15,8 @@
     "express": "^4.17.2",
     "extract-domain": "^2.4.0",
     "sitemapper": "^3.2.2"
+  },
+  "devDependencies": {
+    "@google-cloud/functions-framework": "^2.1.0"
   }
 }
